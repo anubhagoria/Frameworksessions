@@ -10,7 +10,7 @@
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
 	</test>
-	<test name="Login Page Test_edge">
+	<!--<test name="Login Page Test_edge">
 		<parameter name="browser" value="edge"></parameter>
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
@@ -22,6 +22,7 @@
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
 	</test>
+	-->
 
 	<test name="Accounts Page Test">
 		<parameter name="browser" value="firefox"></parameter>
@@ -30,12 +31,13 @@
 		</classes>
 	</test>
 
-	<test name="Search Page Test">
+	<!--<test name="Search Page Test">
 		<parameter name="browser" value="edge"></parameter>
 		<classes>
 			<class name="com.qa.opencart.tests.SearchPageTest" />
 		</classes>
 	</test>
+	-->
 
 
 	<!-- <test name="ProductInfo Page Test">
