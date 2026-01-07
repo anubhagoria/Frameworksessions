@@ -15,6 +15,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<selenium.version>4.39.0</selenium.version>
+		<aspectj.version>1.9.25</aspectj.version>
 
 	</properties>
 
@@ -23,7 +24,7 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>4.39.0</version>
+			<version>${selenium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -71,6 +72,21 @@
 			<artifactId>chaintest-testng</artifactId>
 			<version>1.0.12</version>
 		</dependency>
+		<dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-testng</artifactId>
+			<version>2.32.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.25.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -98,7 +114,17 @@
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/testrunners/testng_regression.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<argLine> 
+						-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" 
+					</argLine>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjweaver</artifactId>
+						<version>${aspectj.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

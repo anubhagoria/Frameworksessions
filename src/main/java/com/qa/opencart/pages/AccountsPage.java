@@ -30,7 +30,7 @@ public class AccountsPage {
 	}
 	
 	public String getAccPageTitle() {
-		String accPageTitle =eleUtil.waitForTitleIs(HOME_PAGE_TITLE, DEFAULT_TIMEOUT);
+		String accPageTitle =eleUtil.waitForTitleIs(HOME_PAGE_TITLE, MEDIUM_DEFAULT_TIMEOUT);
 		return accPageTitle;
 	}
 	

@@ -1,10 +1,15 @@
 package com.qa.opencart.factory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -19,6 +24,11 @@ public class DriverFactory {
 	Properties prop;
 	OptionsManager optionsManager;
 	public static String highlight;
+	
+	public static ThreadLocal<WebDriver> tlDriver= new ThreadLocal<WebDriver>(); 
+	
+	public static final Logger log = LogManager.getLogger(DriverFactory.class);
+	//warnin, info, error, fatalerror
 
 	/**
 	 * This method initializing driver on the basis of browser name
@@ -26,34 +36,42 @@ public class DriverFactory {
 	 * @param browserName
 	 */
 	public WebDriver initDriver(Properties prop) {
+		
+		log.info("Properties: "+prop);
 
 		optionsManager = new OptionsManager(prop);
 		highlight = prop.getProperty("highlight");
 
 		String browserName = prop.getProperty("browser");
+		log.info("Browser name: "+browserName);
 
-		System.out.println("Browser name is " + browserName);
+		//System.out.println("Browser name is " + browserName);
 
 		switch (browserName.trim().toLowerCase()) {
 
 		case "chrome":
-			driver = new ChromeDriver(optionsManager.getChromeOptions());
+			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
 			break;
 		case "firefox":
-			driver = new FirefoxDriver(optionsManager.getFirefoxptions());
+			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxptions()));
 			break;
 		case "edge":
-			driver = new EdgeDriver(optionsManager.getEdgeptions());
+			tlDriver.set(new EdgeDriver(optionsManager.getEdgeptions()));
 			break;
 
 		default:
-			System.out.println("Please supply correct password");
+			log.error("Please supply correct Browser "+browserName);
+			//System.out.println("Please supply correct Browser");
 			throw new BrowserException("====INVALID BROWSER====");
 		}
-		driver.get(prop.getProperty("url"));
-		driver.manage().window().maximize();
-		driver.manage().deleteAllCookies();
-		return driver;
+		getDriver().get(prop.getProperty("url"));
+		getDriver().manage().window().maximize();
+		getDriver().manage().deleteAllCookies();
+		return getDriver();
+	}
+	
+	public static WebDriver getDriver() {
+		return tlDriver.get();
 	}
 
 	// mvn clean install -Denv="qa"
@@ -65,7 +83,8 @@ public class DriverFactory {
 
 		try {
 			if (envName == null) {
-				System.out.println("Env is null, running the tests on qa environment");
+				log.warn("Env is null, running the tests on qa environment");
+				//System.out.println("Env is null, running the tests on qa environment");
 				ip = new FileInputStream("./src/test/resources/config/qa.config.properties");
 			} else {
 				System.out.println("Running the tests on: " + envName);
@@ -80,6 +99,7 @@ public class DriverFactory {
 					ip = new FileInputStream("./src/test/resources/config/dev.config.properties");
 					break;
 				default:
+					log.error("===Invalid environment name=== "+envName);	
 					throw new FrameworkException("===Invalid environment===");
 				}
 			}
@@ -92,5 +112,23 @@ public class DriverFactory {
 			e.printStackTrace();
 		}
 		return prop;
+	}
+	
+	
+	public static File getScreenShotFile() {
+		//TakesScreenshot ts = (TakesScreenshot)driver;  instead of these 2 line below line does the same thing
+		//File file = ts.getScreenshotAs(OutputType.FILE);
+		
+		File scrFile = ((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.FILE);
+		return scrFile;
+	}
+	public static byte[] getScreenshotByte() {
+		return ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);// temp dir
+
+	}
+
+	public static String getScreenshotBase64() {
+		return ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BASE64);// temp dir
+
 	}
 }

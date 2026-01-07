@@ -21,6 +21,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.qa.opencart.factory.DriverFactory;
 
+import io.qameta.allure.Step;
+
 public class ElementUtils {
 
 	WebDriver driver;
@@ -37,6 +39,7 @@ public class ElementUtils {
 		javaUtil= new JavaScriptUtil(driver);
 	}
 
+	@Step("Entering value {1} in element {0}")
 	public void doSendKeys(By locator, String value) {
 		nullCheck(value);
 		getElement(locator).clear();
@@ -44,6 +47,7 @@ public class ElementUtils {
 
 	}
 
+	@Step("Finding the element using {0}")
 	public WebElement getElement(By locator) {
 		WebElement ele = driver.findElement(locator);
 		highlightElement(ele);
@@ -56,6 +60,7 @@ public class ElementUtils {
 		}
 	}
 
+	@Step("Clicking on element using {0}")
 	public void doClick(By locator) {
 		WebElement e1 = getElement(locator);
 		e1.click();
@@ -85,6 +90,7 @@ public class ElementUtils {
 
 	}
 
+	@Step("Getting text of the element {0}")
 	public String getTextelement(By locator) {
 		WebElement e1 = getElement(locator);
 		String eletext = e1.getText();
@@ -325,6 +331,7 @@ public class ElementUtils {
 			wait.until(ExpectedConditions.titleIs(title));
 			return driver.getTitle();
 		}catch(TimeoutException e) {
+			System.out.println("Title did not match within timeout");
 			return null;
 		}
 	}
