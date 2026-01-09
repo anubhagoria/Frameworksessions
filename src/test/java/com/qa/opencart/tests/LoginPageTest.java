@@ -56,7 +56,7 @@ public class LoginPageTest extends BaseTest{
 		Assert.assertTrue(forgotLink);
 	}
 	
-	@Description("Checking the login credentials")
+	@Description("Checking the login Credentials")
 	@Owner("Anuradha")
 	@Severity(SeverityLevel.BLOCKER)
 	@Test(priority=Short.MAX_VALUE, description="login with valid credentials")
