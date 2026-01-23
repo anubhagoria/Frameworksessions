@@ -24,6 +24,9 @@ public class OptionsManager {
 			System.out.println("---Chrome in incognito mode---");
 			co.addArguments("--incognito");
 		}
+		if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+			co.setCapability("browserName", "chrome");
+		}
 		return co;
 	}
 	
@@ -37,6 +40,10 @@ public class OptionsManager {
 			System.out.println("---Firefox in incognito mode---");
 			fo.addArguments("--incognito");
 		}
+		if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+			fo.setCapability("browserName", "firefox");
+		}
+		
 		return fo;
 	}
 	public EdgeOptions getEdgeptions() {
@@ -49,6 +56,10 @@ public class OptionsManager {
 			System.out.println("---Edge in incognito mode---");
 			eo.addArguments("--inprivate");
 		}
+		if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+			eo.setCapability("browserName", "edge");
+		}
+		
 		return eo;
 	}
 	

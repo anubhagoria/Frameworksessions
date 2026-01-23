@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.qa.opencart.exceptions.BrowserException;
 import com.qa.opencart.exceptions.FrameworkException;
@@ -50,13 +53,42 @@ public class DriverFactory {
 		switch (browserName.trim().toLowerCase()) {
 
 		case "chrome":
+			
+			if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+				try {
+					tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")),optionsManager.getChromeOptions()));
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
 			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
 			break;
 		case "firefox":
+			if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+				try {
+					tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")),optionsManager.getChromeOptions()));
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
 			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxptions()));
+			}
 			break;
 		case "edge":
+			if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+				try {
+					tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")),optionsManager.getChromeOptions()));
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
 			tlDriver.set(new EdgeDriver(optionsManager.getEdgeptions()));
+			}
 			break;
 
 		default:
