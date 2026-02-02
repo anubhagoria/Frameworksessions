@@ -67,7 +67,7 @@ public class LoginPageTest extends BaseTest{
 	}
 	
 	@Test(enabled=false)
-	public void forgorPass() {
+	public void forgotPass() {
 		System.out.println("test enabled as false");
 	}
 }
